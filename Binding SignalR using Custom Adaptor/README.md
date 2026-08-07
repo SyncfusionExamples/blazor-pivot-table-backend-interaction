@@ -1,14 +1,6 @@
-# Pivot_SignalR
-
-### Real-time Blazor Pivot Table Dashboard powered by SignalR & Syncfusion
+# Real-time Blazor Pivot Table Dashboard powered by SignalR & Syncfusion
 
 A production-ready sample demonstrating **real-time data synchronization** between a server-side data source and the **Syncfusion Blazor Pivot Table** using **ASP.NET Core SignalR**. A background service pushes live order updates to all connected clients over a WebSocket hub, while a custom data adaptor feeds the Pivot Table with the latest aggregated state — no polling, no manual refresh.
-
-![.NET](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet&logoColor=white)
-![Blazor](https://img.shields.io/badge/Blazor-Server-5C2D91?logo=blazor&logoColor=white)
-![SignalR](https://img.shields.io/badge/SignalR-Latest-0078D4?logo=aspdotnet&logoColor=white)
-![Syncfusion](https://img.shields.io/badge/Syncfusion%20Pivot%20Table-34.2.2-0078D4)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
@@ -37,7 +29,7 @@ A production-ready sample demonstrating **real-time data synchronization** betwe
 
 Traditional dashboards that visualize aggregated business data typically rely on **periodic polling** — the client periodically asks the server for updates. This approach wastes bandwidth, increases server load, and produces a **stale, "stuttering"** user experience where numbers jump in chunks instead of flowing smoothly.
 
-`Pivot_SignalR` replaces polling with a **push-based model**. A long-running background service mutates the underlying order data and, every 5 seconds, broadcasts the full collection to every connected client through a SignalR hub. Blazor receives the broadcast, refreshes the Pivot Table, and re-renders — giving the illusion of a **live, breathing dashboard**.
+This sample replaces polling with a **push-based model**. A long-running background service mutates the underlying order data and, every 5 seconds, broadcasts the full collection to every connected client through a SignalR hub. Blazor receives the broadcast, refreshes the Pivot Table, and re-renders — giving the illusion of a **live, breathing dashboard**.
 
 ### Why does it exist?
 
@@ -46,13 +38,6 @@ This repository serves as a **reference implementation** for developers who need
 - Bind the Syncfusion Blazor Pivot Table to a **custom data adaptor** (not a REST URL).
 - Integrate SignalR push notifications with a Synfusion Pivot Table.
 - Build a real-time BI/analytics dashboard in .NET 10 / Blazor Server.
-
-### Who should use it?
-
-- **Blazor developers** building real-time analytics surfaces.
-- **BI / dashboard engineers** evaluating Syncfusion Pivot Table live-update capabilities.
-- **.NET architects** looking for a custom-adaptor + SignalR pattern reference.
-- **Teams** migrating polling-based dashboards to WebSocket push.
 
 ### Primary use cases
 
@@ -533,35 +518,3 @@ Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY
 - Search existing issues before opening a new one.
 - Tag the issue with `bug`, `enhancement`, or `question`.
 
----
-
-## License
-
-This project is intended as a Syncfusion-authored sample. A `LICENSE` file was not detected in the repository at the time of this README generation.
-
-> If you adopt this sample, add a `LICENSE` file at the repo root (commonly MIT for Syncfusion examples) and update this section accordingly:
-
-```md
-This project is licensed under the terms of the [MIT License](./LICENSE).
-```
-
----
-
-## Acknowledgements
-
-- [Syncfusion Blazor Pivot Table](https://www.syncfusion.com/blazor-components/blazor-pivot-table) — UI component powering the pivot surface.
-- [Syncfusion Blazor Themes](https://www.syncfusion.com/blazor-components/blazor-themes) — Fluent2 theme styling.
-- [ASP.NET Core SignalR](https://learn.microsoft.com/aspnet/core/signalr/introduction) — real-time WebSocket framework.
-- [.NET 10](https://dotnet.microsoft.com/) — runtime and SDK.
-- [Bootstrap](https://getbootstrap.com/) — base CSS shipped with the Blazor template.
-- Syncfusion documentation team — for the pattern this sample is based on.
-
----
-
-### SEO Keywords
-
-**Primary:** Blazor, SignalR, Syncfusion Pivot Table, Real-Time Dashboard
-
-**Secondary:** ASP.NET Core, .NET 10, Custom Data Adaptor, WebSocket, Blazor Server, Pivot Table, Real-Time Updates, SignalR Hub, BackgroundService
-
-**Long-tail:** Blazor Pivot Table SignalR example, Syncfusion real-time pivot dashboard, Blazor custom adaptor SignalR, .NET 10 real-time pivot table sample
