@@ -1,0 +1,74 @@
+@page "/"
+
+@using Microsoft.AspNetCore.SignalR.Client
+@using Pivot_SignalR.Models
+@using Pivot_SignalR.Services
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.PivotView
+
+@implements IAsyncDisposable
+
+@inject NavigationManager Navigation
+
+<SfPivotView @ref="PivotObj" TValue="Order" Width="1000" Height="500" ShowFieldList="true">
+    <PivotViewDataSourceSettings TValue="Order" ExpandAll="false" EnableSorting="true">
+
+        <SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@typeof(OrderAdaptor)">
+        </SfDataManager>
+
+        <PivotViewRows>
+            <PivotViewRow Name="CustomerName"></PivotViewRow>
+        </PivotViewRows>
+
+        <PivotViewColumns>
+            <PivotViewColumn Name="EmployeeID"></PivotViewColumn>
+        </PivotViewColumns>
+
+        <PivotViewValues>
+            <PivotViewValue Name="Freight" Caption="Freight">
+            </PivotViewValue>
+        </PivotViewValues>
+
+    </PivotViewDataSourceSettings>
+
+    <PivotViewGridSettings ColumnWidth="120"></PivotViewGridSettings>
+
+</SfPivotView>
+
+@code
+{
+    private HubConnection? hubConnection;
+
+    private SfPivotView<Order>? PivotObj;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder().WithUrl(Navigation.ToAbsoluteUri("/pivothub"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        hubConnection.On<List<Order>>("ReceiveOrderUpdate",async _ =>
+            {
+                await InvokeAsync(async () =>
+                {
+                    if (PivotObj != null)
+                    {
+                        await PivotObj.RefreshAsync();
+                    }
+
+                    StateHasChanged();
+                });
+            });
+
+        await hubConnection.StartAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}
+`

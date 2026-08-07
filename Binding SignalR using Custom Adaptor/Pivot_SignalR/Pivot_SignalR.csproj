@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+	  <RootNamespace>Pivot_SignalR</RootNamespace>
+    <AssemblyName>Pivot_SignalR</AssemblyName>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+<ItemGroup>
+	
+	<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.10" />
+	
+	<PackageReference Include="Syncfusion.Blazor.PivotTable" Version="34.2.2" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="34.2.2" />
+</ItemGroup>
+</Project>
