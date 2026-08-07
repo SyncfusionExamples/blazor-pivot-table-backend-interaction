@@ -143,8 +143,8 @@ The Razor component subscribes to the `ReceiveOrderUpdate` event from the hub an
 ### Clone Repository
 
 ```bash
-git clone https://github.com/SyncfusionExamples/how-to-refresh-the-blazor-pivot-table-on-real-time-update-using-signalR.git
-cd how-to-refresh-the-blazor-pivot-table-on-real-time-update-using-signalR
+git clone https://github.com/SyncfusionExamples/blazor-pivot-table-integrations.git
+cd Binding SignalR using Custom Adaptor
 ```
 
 > Replace the URL above with the canonical repository URL if forking.
