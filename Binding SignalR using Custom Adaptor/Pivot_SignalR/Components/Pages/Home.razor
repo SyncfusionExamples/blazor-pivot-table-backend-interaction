@@ -5,12 +5,33 @@
 @using Pivot_SignalR.Services
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.PivotView
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
 
 @implements IAsyncDisposable
 
 @inject NavigationManager Navigation
 
+<div class="head">
+    <strong style="font-size:14px">
+        Feed Delay (ms) :
+    </strong>
+
+    <SfNumericTextBox TValue="int" @bind-Value="FeedDelay" Width="150px" Min="2000" Step="1000"
+                      Format="N0">
+    </SfNumericTextBox>
+
+    <SfButton CssClass="updatePivotData" OnClick="StartUpdating" Disabled="@IsRunning">
+        Start Updating...
+    </SfButton>
+
+    <SfButton CssClass="updatePivotData" OnClick="StopUpdating" Disabled="@(!IsRunning)">
+        Stop Updating...
+    </SfButton>
+</div>
+
 <SfPivotView @ref="PivotObj" TValue="Order" Width="1000" Height="500" ShowFieldList="true">
+
     <PivotViewDataSourceSettings TValue="Order" ExpandAll="false" EnableSorting="true">
 
         <SfDataManager Adaptor="Adaptors.CustomAdaptor" AdaptorInstance="@typeof(OrderAdaptor)">
@@ -25,15 +46,27 @@
         </PivotViewColumns>
 
         <PivotViewValues>
-            <PivotViewValue Name="Freight" Caption="Freight">
+            <PivotViewValue Name="Freight"
+                            Caption="Freight">
             </PivotViewValue>
         </PivotViewValues>
 
     </PivotViewDataSourceSettings>
 
-    <PivotViewGridSettings ColumnWidth="120"></PivotViewGridSettings>
+    <PivotViewGridSettings ColumnWidth="120">
+    </PivotViewGridSettings>
 
 </SfPivotView>
+
+<style>
+    .head {
+        margin-bottom: 10px;
+    }
+
+    .updatePivotData {
+        margin-left: 10px !important;
+    }
+</style>
 
 @code
 {
@@ -41,26 +74,50 @@
 
     private SfPivotView<Order>? PivotObj;
 
+    private int FeedDelay = 5000;
+
+    private bool IsRunning = true;
+
     protected override async Task OnInitializedAsync()
     {
-        hubConnection = new HubConnectionBuilder().WithUrl(Navigation.ToAbsoluteUri("/pivothub"))
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/pivothub"))
             .WithAutomaticReconnect()
             .Build();
 
-        hubConnection.On<List<Order>>("ReceiveOrderUpdate",async _ =>
+        hubConnection.On<List<Order>>(
+            "ReceiveOrderUpdate",
+            async _ =>
             {
-                await InvokeAsync(async () =>
+                if (PivotObj != null)
                 {
-                    if (PivotObj != null)
-                    {
-                        await PivotObj.RefreshAsync();
-                    }
+                    await PivotObj.RefreshAsync(true);
+                }
 
-                    StateHasChanged();
-                });
+                await InvokeAsync(StateHasChanged);
             });
 
         await hubConnection.StartAsync();
+    }
+
+    private async Task StartUpdating()
+    {
+        IsRunning = true;
+
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("UpdateSettings", true, FeedDelay);
+        }
+    }
+
+    private async Task StopUpdating()
+    {
+        IsRunning = false;
+
+        if (hubConnection != null)
+        {
+            await hubConnection.SendAsync("UpdateSettings", false, FeedDelay);
+        }
     }
 
     public async ValueTask DisposeAsync()
@@ -71,4 +128,3 @@
         }
     }
 }
-`
