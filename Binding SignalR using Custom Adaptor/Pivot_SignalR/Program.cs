@@ -18,6 +18,8 @@ builder.Services.AddSingleton<OrderDataService>();
 // Register Custom Adaptor
 builder.Services.AddScoped<OrderAdaptor>();
 
+builder.Services.AddSingleton<UpdateConfiguration>();
+
 // Register SignalR
 builder.Services.AddSignalR();
 
